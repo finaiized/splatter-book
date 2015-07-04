@@ -5,20 +5,17 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
-/**
- * Created by Dominic on 7/02/15.
- */
 public class RecipeOpenHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "recipe_data.db";
     private static final int DATABASE_VERSION = 1;
 
-    private static final String RECIPE_TABLE_NAME = "recipe";
-    private static final String KEY_RECIPE_TITLE = "title";
-    private static final String KEY_RECIPE_DESCRIPTION = "description";
-    private static final String KEY_RECIPE_TIMES_MADE = "times_made";
-    private static final String KEY_RECIPE_PREP_TIME = "prep_time";
-    private static final String KEY_RECIPE_COOK_TIME = "cook_time";
+    public static final String RECIPE_TABLE_NAME = "recipe";
+    public static final String KEY_RECIPE_TITLE = "title";
+    public static final String KEY_RECIPE_DESCRIPTION = "description";
+    public static final String KEY_RECIPE_TIMES_MADE = "times_made";
+    public static final String KEY_RECIPE_PREP_TIME = "prep_time";
+    public static final String KEY_RECIPE_COOK_TIME = "cook_time";
     private static final String RECIPE_TABLE_CREATE = String.format(
         "CREATE TABLE %s (" +
             "%s INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -36,10 +33,10 @@ public class RecipeOpenHelper extends SQLiteOpenHelper {
             KEY_RECIPE_PREP_TIME,
             KEY_RECIPE_COOK_TIME);
 
-    private static final String RECIPE_STEP_TABLE_NAME = "recipe_step";
-    private static final String KEY_RECIPE_STEP_ID = "recipe_id";
-    private static final String KEY_RECIPE_STEP_ORDER = "ordering";
-    private static final String KEY_RECIPE_STEP_DESCRIPTION = "description";
+    public static final String RECIPE_STEP_TABLE_NAME = "recipe_step";
+    public static final String KEY_RECIPE_STEP_ID = "recipe_id";
+    public static final String KEY_RECIPE_STEP_ORDER = "ordering";
+    public static final String KEY_RECIPE_STEP_DESCRIPTION = "description";
     private static final String RECIPE_STEP_TABLE_CREATE = String.format(
         "CREATE TABLE %s (" +
                 "%s INTEGER," +
@@ -55,10 +52,10 @@ public class RecipeOpenHelper extends SQLiteOpenHelper {
 
     );
 
-    private static final String RECIPE_INGREDIENT_TABLE_NAME = "recipe_ingredient";
-    private static final String KEY_RECIPE_INGREDIENT_ID = "recipe_id";
-    private static final String KEY_RECIPE_INGREDIENT_ORDER = "ordering";
-    private static final String KEY_RECIPE_INGREDIENT_DESCRIPTION = "description";
+    public static final String RECIPE_INGREDIENT_TABLE_NAME = "recipe_ingredient";
+    public static final String KEY_RECIPE_INGREDIENT_ID = "recipe_id";
+    public static final String KEY_RECIPE_INGREDIENT_ORDER = "ordering";
+    public static final String KEY_RECIPE_INGREDIENT_DESCRIPTION = "description";
     private static final String RECIPE_INGREDIENT_TABLE_CREATE = String.format(
             "CREATE TABLE %s (" +
                     "%s INTEGER," +
