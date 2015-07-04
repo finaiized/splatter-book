@@ -16,6 +16,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="com.example.finaiized.splatterbook.persistence.RecipeProvider"
+            android:authorities="com.example.finaiized.splatterbook.provider"
+            android:exported="false" />
     </application>
 
 </manifest>
