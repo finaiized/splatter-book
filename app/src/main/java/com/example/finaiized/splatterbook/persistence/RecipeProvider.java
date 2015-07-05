@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteQueryBuilder;
+import com.example.finaiized.splatterbook.persistence.RecipesContract.*;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
@@ -13,19 +14,18 @@ public class RecipeProvider extends ContentProvider {
 
     private RecipeOpenHelper openHelper;
 
-    public static final String AUTHORITY = "com.example.finaiized.splatterbook.provider";
     private static final int RECIPES = 1;
     private static final int RECIPES_ID = 2;
-    public static final int RECIPES_STEPS = 3;
-    public static final int RECIPES_INGREDIENTS = 4;
+    private static final int RECIPES_STEPS = 3;
+    private static final int RECIPES_INGREDIENTS = 4;
 
     private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        uriMatcher.addURI(AUTHORITY, "recipes", RECIPES);
-        uriMatcher.addURI(AUTHORITY, "recipes/#", RECIPES_ID);
-        uriMatcher.addURI(AUTHORITY, "recipes/#/steps", RECIPES_STEPS);
-        uriMatcher.addURI(AUTHORITY, "recipes/#/ingredients", RECIPES_INGREDIENTS);
+        uriMatcher.addURI(RecipesContract.CONTENT_AUTHORITY, "recipes", RECIPES);
+        uriMatcher.addURI(RecipesContract.CONTENT_AUTHORITY, "recipes/#", RECIPES_ID);
+        uriMatcher.addURI(RecipesContract.CONTENT_AUTHORITY, "recipes/#/steps", RECIPES_STEPS);
+        uriMatcher.addURI(RecipesContract.CONTENT_AUTHORITY, "recipes/#/ingredients", RECIPES_INGREDIENTS);
     }
 
     @Override
@@ -40,22 +40,22 @@ public class RecipeProvider extends ContentProvider {
 
         switch (uriMatcher.match(uri)) {
             case RECIPES:
-                queryBuilder.setTables(RecipeOpenHelper.RECIPE_TABLE_NAME);
+                queryBuilder.setTables(Table.Recipes.TABLE_NAME);
                 if (TextUtils.isEmpty(sortOrder)) sortOrder = BaseColumns._ID + " ASC";
                 break;
             case RECIPES_ID:
-                queryBuilder.setTables(RecipeOpenHelper.RECIPE_TABLE_NAME);
-                queryBuilder.appendWhere(String.format("%s = %s", BaseColumns._ID, uri.getLastPathSegment()));
+                queryBuilder.setTables(Table.Recipes.TABLE_NAME);
+                queryBuilder.appendWhere(String.format("%s = %s", BaseColumns._ID, Recipes.getRecipeId(uri)));
                 break;
             case RECIPES_STEPS:
-                queryBuilder.setTables(RecipeOpenHelper.RECIPE_STEP_TABLE_NAME);
-                if (TextUtils.isEmpty(sortOrder)) sortOrder = RecipeOpenHelper.KEY_RECIPE_STEP_ORDER + " ASC";
-                queryBuilder.appendWhere(String.format("%s = %s", RecipeOpenHelper.KEY_RECIPE_STEP_ID, uri.getPathSegments().get(1)));
+                queryBuilder.setTables(Table.Steps.TABLE_NAME);
+                if (TextUtils.isEmpty(sortOrder)) sortOrder = Table.Steps.ORDER + " ASC";
+                queryBuilder.appendWhere(String.format("%s = %s", Table.Steps.RECIPE_ID, Recipes.getRecipeId(uri)));
                 break;
             case RECIPES_INGREDIENTS:
-                queryBuilder.setTables(RecipeOpenHelper.RECIPE_INGREDIENT_TABLE_NAME);
-                if (TextUtils.isEmpty(sortOrder)) sortOrder = RecipeOpenHelper.KEY_RECIPE_INGREDIENT_ORDER + " ASC";
-                queryBuilder.appendWhere(String.format("%s = %s", RecipeOpenHelper.KEY_RECIPE_INGREDIENT_ID, uri.getPathSegments().get(1)));
+                queryBuilder.setTables(Table.Ingredients.TABLE_NAME);
+                if (TextUtils.isEmpty(sortOrder)) sortOrder = Table.Ingredients.ORDER + " ASC";
+                queryBuilder.appendWhere(String.format("%s = %s", Table.Ingredients.RECIPE_ID, Recipes.getRecipeId(uri)));
                 break;
         }
 
