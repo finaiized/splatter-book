@@ -1,6 +1,7 @@
 package com.example.finaiized.splatterbook.persistence;
 
 import android.net.Uri;
+import android.provider.BaseColumns;
 
 public final class RecipesContract {
     public static final String CONTENT_AUTHORITY = "com.example.finaiized.splatterbook.provider";
@@ -15,6 +16,7 @@ public final class RecipesContract {
         public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.finaiized.splatterbook.provider.recipes";
         public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.finaiized.splatterbook.provider.recipes";
 
+        public static final String ID = BaseColumns._ID;
         public static final String TITLE = Table.Recipes.TITLE;
         public static final String DESCRIPTION = Table.Recipes.DESCRIPTION;
         public static final String TIMES_MADE = Table.Recipes.TIMES_MADE;

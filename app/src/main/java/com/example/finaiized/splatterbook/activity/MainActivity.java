@@ -1,10 +1,13 @@
-package com.example.finaiized.splatterbook;
+package com.example.finaiized.splatterbook.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.example.finaiized.splatterbook.R;
+import com.example.finaiized.splatterbook.fragments.RecipeListFragment;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -16,6 +19,9 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar appBar = (Toolbar)findViewById(R.id.app_bar);
         setSupportActionBar(appBar);
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.main_container, new RecipeListFragment()).commit();
     }
 
     @Override
