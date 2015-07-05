@@ -69,7 +69,18 @@ public class RecipeProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        return null;
+        switch(uriMatcher.match(uri)) {
+            case RECIPES:
+                return Recipes.CONTENT_TYPE;
+            case RECIPES_ID:
+                return Recipes.CONTENT_ITEM_TYPE;
+            case RECIPES_STEPS:
+                return Steps.CONTENT_TYPE;
+            case RECIPES_INGREDIENTS:
+                return Ingredients.CONTENT_TYPE;
+            default:
+                throw new UnsupportedOperationException("No known type for " + uri);
+        }
     }
 
     @Override
@@ -133,6 +144,37 @@ public class RecipeProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        String tableName;
+        switch (uriMatcher.match(uri)) {
+            case RECIPES_ID:
+                selection = Table.Recipes.ID + "=" + Recipes.getRecipeId(uri);
+                tableName = Table.Recipes.TABLE_NAME;
+                break;
+            case RECIPES_STEPS: {
+                if (!TextUtils.isEmpty(selection))
+                    selection =  Table.Steps.RECIPE_ID + "=" + Recipes.getRecipeId(uri) + " AND " + selection;
+                else
+                    // Updating all steps at once is not allowed
+                    throw new UnsupportedOperationException("Specify the index of the step to remove");
+
+                tableName = Table.Steps.TABLE_NAME;
+                break;
+            }
+            case RECIPES_INGREDIENTS: {
+                if (!TextUtils.isEmpty(selection))
+                    selection = Table.Ingredients.RECIPE_ID + "=" + Recipes.getRecipeId(uri) + " AND " + selection;
+                else
+                    // Updating all ingredients at once is not allowed
+                    throw new UnsupportedOperationException("Specify the index of the ingredient to remove");
+
+                tableName = Table.Ingredients.TABLE_NAME;
+                break;
+            }
+            default:
+                throw new UnsupportedOperationException("Unknown update uri: " + uri);
+        }
+
+        return db.update(tableName, values, selection, selectionArgs);
     }
 }

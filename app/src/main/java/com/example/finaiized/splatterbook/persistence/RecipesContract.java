@@ -12,6 +12,9 @@ public final class RecipesContract {
 
     public static final class Recipes {
         public static final Uri CONTENT_URI = Uri.withAppendedPath(BASE_URI, PATH_RECIPES);
+        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.finaiized.splatterbook.provider.recipes";
+        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.finaiized.splatterbook.provider.recipes";
+
         public static final String TITLE = Table.Recipes.TITLE;
         public static final String DESCRIPTION = Table.Recipes.DESCRIPTION;
         public static final String TIMES_MADE = Table.Recipes.TIMES_MADE;
@@ -36,12 +39,16 @@ public final class RecipesContract {
     }
 
     public static final class Steps {
+        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.finaiized.splatterbook.provider.steps";
+
         public static final String RECIPE_ID = Table.Steps.RECIPE_ID;
         public static final String ORDER = Table.Steps.ORDER;
         public static final String DESCRIPTION = Table.Steps.DESCRIPTION;
     }
 
     public static final class Ingredients {
+        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.finaiized.splatterbook.provider.ingredients";
+
         public static final String RECIPE_ID = Table.Ingredients.RECIPE_ID;
         public static final String ORDER = Table.Ingredients.ORDER;
         public static final String DESCRIPTION = Table.Ingredients.DESCRIPTION;
