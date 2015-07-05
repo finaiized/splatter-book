@@ -4,8 +4,11 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
+
 import com.example.finaiized.splatterbook.persistence.RecipesContract.*;
+
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
@@ -57,6 +60,8 @@ public class RecipeProvider extends ContentProvider {
                 if (TextUtils.isEmpty(sortOrder)) sortOrder = Table.Ingredients.ORDER + " ASC";
                 queryBuilder.appendWhere(String.format("%s = %s", Table.Ingredients.RECIPE_ID, Recipes.getRecipeId(uri)));
                 break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
         return queryBuilder.query(openHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
@@ -69,7 +74,23 @@ public class RecipeProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        return null;
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        switch (uriMatcher.match(uri)) {
+            case RECIPES: {
+                long index = db.insertOrThrow(Table.Recipes.TABLE_NAME, null, values);
+                return Recipes.buildRecipeUri(String.valueOf(index));
+            }
+            case RECIPES_STEPS: {
+                long index = db.insertOrThrow(Table.Steps.TABLE_NAME, null, values);
+                return Recipes.buildStepsUri(String.valueOf(index));
+            }
+            case RECIPES_INGREDIENTS: {
+                long index = db.insertOrThrow(Table.Ingredients.TABLE_NAME, null, values);
+                return Recipes.buildIngredientsUri(String.valueOf(index));
+            }
+            default:
+                throw new UnsupportedOperationException("Unknown insert uri: " + uri);
+        }
     }
 
     @Override
