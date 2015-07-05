@@ -95,7 +95,40 @@ public class RecipeProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        SQLiteDatabase db = openHelper.getWritableDatabase();
+        String tableName;
+
+        switch (uriMatcher.match(uri)) {
+            case RECIPES_ID:
+                selection = Table.Recipes.ID + "=" + Recipes.getRecipeId(uri);
+                tableName = Table.Recipes.TABLE_NAME;
+                // Also delete associated ingredients and steps
+                delete(RecipesContract.Recipes.buildIngredientsUri(Recipes.getRecipeId(uri)), null, null);
+                delete(RecipesContract.Recipes.buildStepsUri(Recipes.getRecipeId(uri)), null, null);
+                break;
+            case RECIPES_STEPS: {
+                String tempSel = Table.Steps.RECIPE_ID + "=" + Recipes.getRecipeId(uri);
+                if (TextUtils.isEmpty(selection)) // All steps for this recipe are to be removed
+                    selection = tempSel;
+                else
+                    selection += " AND " + tempSel;
+                tableName = Table.Steps.TABLE_NAME;
+                break;
+            }
+            case RECIPES_INGREDIENTS: {
+                String tempSel = Table.Ingredients.RECIPE_ID + "=" + Recipes.getRecipeId(uri);
+                if (TextUtils.isEmpty(selection)) // All ingredients for this recipe are to be removed
+                    selection = tempSel;
+                else
+                    selection += " AND " + tempSel;
+                tableName = Table.Ingredients.TABLE_NAME;
+                break;
+            }
+            default:
+                throw new UnsupportedOperationException("Unknown deletion uri: " + uri);
+        }
+
+        return db.delete(tableName, selection, selectionArgs);
     }
 
     @Override

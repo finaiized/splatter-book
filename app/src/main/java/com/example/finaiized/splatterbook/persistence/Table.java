@@ -7,6 +7,7 @@ public final class Table {
 
     public final class Recipes {
         public static final String TABLE_NAME = "recipe";
+        public static final String ID = BaseColumns._ID;
         public static final String TITLE = "title";
         public static final String DESCRIPTION = "description";
         public static final String TIMES_MADE = "times_made";
