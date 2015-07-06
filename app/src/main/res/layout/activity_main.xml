@@ -10,9 +10,8 @@
         android:minHeight="?attr/actionBarSize"
         android:background="?attr/colorPrimary" />
 
-    <fragment
-        android:id="@+id/recipe_list"
-        class="com.example.finaiized.splatterbook.fragments.RecipeListFragment"
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_below="@id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

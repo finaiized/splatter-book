@@ -1,5 +1,6 @@
 package com.example.finaiized.splatterbook.fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
@@ -8,6 +9,7 @@ import android.support.v4.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.content.CursorLoader;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,14 +18,33 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
 import com.example.finaiized.splatterbook.R;
-import com.example.finaiized.splatterbook.activity.DetailActivity;
-import com.example.finaiized.splatterbook.activity.EditActivity;
 import com.example.finaiized.splatterbook.persistence.RecipesContract;
 
 public class RecipeListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     SimpleCursorAdapter adapter;
-    boolean dualPane;
+    OnRecipeSelectedListener recipeSelectedListener;
+    OnAddRecipeListener  addRecipeListener;
+
+    public interface OnRecipeSelectedListener {
+        void onRecipeSelected(int id);
+    }
+
+    public interface OnAddRecipeListener {
+        void onAddRecipe();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            recipeSelectedListener = (OnRecipeSelectedListener) activity;
+            addRecipeListener = (OnAddRecipeListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement the interfaces declared in " + getClass().getSimpleName());
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,15 +59,9 @@ public class RecipeListFragment extends ListFragment implements LoaderManager.Lo
                 new String[] {RecipesContract.Recipes.TITLE, RecipesContract.Recipes.DESCRIPTION},
                 new int[] { android.R.id.text1, android.R.id.text2}, 0);
         setListAdapter(adapter);
+        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
         getLoaderManager().initLoader(0, null, this);
-
-        View detailsFrame = getActivity().findViewById(R.id.recipe_details);
-        dualPane = detailsFrame != null && detailsFrame.getVisibility() == View.VISIBLE;
-
-        if (dualPane) {
-            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-            showRecipeDetails(0);
-        }
     }
 
     @Override
@@ -58,9 +73,7 @@ public class RecipeListFragment extends ListFragment implements LoaderManager.Lo
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                Intent i = new Intent(getActivity(), EditActivity.class);
-                i.putExtra(EditActivity.KEY_ID, -1);
-                startActivity(i);
+                addRecipeListener.onAddRecipe();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -69,25 +82,8 @@ public class RecipeListFragment extends ListFragment implements LoaderManager.Lo
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        showRecipeDetails((int)id);
-    }
-
-    private void showRecipeDetails(int position) {
-        if (dualPane) {
-            getListView().setItemChecked(position, true);
-            RecipeDetailFragment fragment = (RecipeDetailFragment) getFragmentManager().findFragmentById(R.id.recipe_details);
-            if (fragment == null || fragment.getCurrentIndex() != position) {
-                fragment = RecipeDetailFragment.newInstance(position);
-                assert(fragment.getArguments() != null);
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.recipe_details, fragment);
-                ft.commit();
-            }
-        } else {
-            Intent i = new Intent(getActivity(), DetailActivity.class);
-            i.putExtra(DetailActivity.KEY_INDEX, position);
-            startActivity(i);
-        }
+        getListView().setItemChecked(position, true);
+        recipeSelectedListener.onRecipeSelected((int) id);
     }
 
     @Override

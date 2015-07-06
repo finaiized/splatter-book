@@ -71,4 +71,9 @@ public class RecipeDetailFragment extends Fragment implements LoaderManager.Load
     public void onLoaderReset(Loader<Cursor> loader) {
 
     }
+
+    public void updateRecipeView(int id) {
+        getArguments().putInt(KEY_INDEX, id);
+        getLoaderManager().restartLoader(0, null, this);
+    }
 }

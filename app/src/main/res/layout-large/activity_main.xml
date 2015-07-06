@@ -17,19 +17,17 @@
         android:layout_below="@id/app_bar"
         android:orientation="horizontal">
 
-        <fragment
-            android:id="@+id/recipe_list"
-            class="com.example.finaiized.splatterbook.fragments.RecipeListFragment"
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
+        <FrameLayout
+            android:id="@+id/fragment_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <View android:background="#000000"
             android:layout_width="1dp"
             android:layout_height="match_parent" />
 
         <FrameLayout
-            android:id="@+id/recipe_details"
+            android:id="@+id/fragment_details"
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_weight="3" />
