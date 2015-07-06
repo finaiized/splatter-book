@@ -41,7 +41,7 @@ public class RecipeListFragment extends ListFragment implements LoaderManager.Lo
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        showRecipeDetails(position);
+        showRecipeDetails((int)id);
     }
 
     private void showRecipeDetails(int position) {
