@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.finaiized.splatterbook.R;
-import com.example.finaiized.splatterbook.persistence.RecipesContract.*;
+import com.example.finaiized.splatterbook.persistence.RecipesContract.Recipes;
 
 public class RecipeDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String KEY_INDEX = "index";

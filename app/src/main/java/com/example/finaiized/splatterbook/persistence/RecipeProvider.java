@@ -6,12 +6,13 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
-
-import com.example.finaiized.splatterbook.persistence.RecipesContract.*;
-
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.text.TextUtils;
+
+import com.example.finaiized.splatterbook.persistence.RecipesContract.Ingredients;
+import com.example.finaiized.splatterbook.persistence.RecipesContract.Recipes;
+import com.example.finaiized.splatterbook.persistence.RecipesContract.Steps;
 
 public class RecipeProvider extends ContentProvider {
 
