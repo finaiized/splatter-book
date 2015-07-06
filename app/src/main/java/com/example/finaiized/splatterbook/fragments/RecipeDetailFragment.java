@@ -5,19 +5,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.finaiized.splatterbook.R;
-import com.example.finaiized.splatterbook.persistence.RecipesContract;
+import com.example.finaiized.splatterbook.persistence.RecipesContract.*;
 
-public class RecipeDetailFragment extends Fragment {
+public class RecipeDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String KEY_INDEX = "index";
-    private TextView title;
-    private TextView description;
+    private TextView titleText;
+    private TextView descriptionText;
 
 
     public static RecipeDetailFragment newInstance(int index) {
@@ -32,25 +34,41 @@ public class RecipeDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_detail, container, false);
-        title = (TextView) v.findViewById(R.id.recipe_title);
-        description = (TextView) v.findViewById(R.id.recipe_description);
+        titleText = (TextView) v.findViewById(R.id.recipe_title);
+        descriptionText = (TextView) v.findViewById(R.id.recipe_description);
         return v;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Uri uri = RecipesContract.Recipes.buildRecipeUri(String.valueOf(getCurrentIndex()));
-        Cursor c = getActivity().getContentResolver().query(uri, new String[] {RecipesContract.Recipes.TITLE, RecipesContract.Recipes.DESCRIPTION}, null, null, null);
-        if (c != null) {
-            c.moveToNext();
-            title.setText(c.getString(c.getColumnIndex(RecipesContract.Recipes.TITLE)));
-            description.setText(c.getString(c.getColumnIndex(RecipesContract.Recipes.DESCRIPTION)));
-        }
-        c.close();
+        getLoaderManager().initLoader(0, null, this);
     }
 
     public int getCurrentIndex() {
         return getArguments().getInt(KEY_INDEX, 0);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String[] projection = new String[] {Recipes.ID, Recipes.TITLE, Recipes.DESCRIPTION};
+        Uri uri = Recipes.buildRecipeUri(String.valueOf(getCurrentIndex()));
+        return new CursorLoader(getActivity(), uri, projection, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data != null) {
+            data.moveToFirst();
+            String title = data.getString(data.getColumnIndex(Recipes.TITLE));
+            String description = data.getString(data.getColumnIndex(Recipes.DESCRIPTION));
+            titleText.setText(title);
+            descriptionText.setText(description);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }
