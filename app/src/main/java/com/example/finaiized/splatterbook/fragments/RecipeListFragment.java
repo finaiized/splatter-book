@@ -17,6 +17,7 @@ import android.widget.SimpleCursorAdapter;
 
 import com.example.finaiized.splatterbook.R;
 import com.example.finaiized.splatterbook.activity.DetailActivity;
+import com.example.finaiized.splatterbook.activity.EditActivity;
 import com.example.finaiized.splatterbook.persistence.RecipesContract;
 
 public class RecipeListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
@@ -57,7 +58,9 @@ public class RecipeListFragment extends ListFragment implements LoaderManager.Lo
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-
+                Intent i = new Intent(getActivity(), EditActivity.class);
+                i.putExtra(EditActivity.KEY_ID, -1);
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
