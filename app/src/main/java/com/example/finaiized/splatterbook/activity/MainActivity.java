@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity implements
                 ((RecipeDetailFragment) fragment).updateRecipeView(id);
             } else { // No detail fragment from before - create a new one
                 fragment = RecipeDetailFragment.newInstance(id);
-                getSupportFragmentManager().beginTransaction().add(R.id.fragment_secondary, fragment).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_secondary, fragment).commit();
             }
         } else { // Single pane - replace existing fragment
             fragment = RecipeDetailFragment.newInstance(id);
