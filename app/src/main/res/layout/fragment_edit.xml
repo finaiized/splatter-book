@@ -7,12 +7,14 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Recipe Name" />
+        android:hint="Recipe Name"
+        android:id="@+id/recipe_name" />
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Description" />
+        android:hint="Description"
+        android:id="@+id/recipe_description" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -33,7 +35,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="\?" />
+                android:text="\?"
+                android:id="@+id/recipe_servings" />
         </LinearLayout>
 
         <LinearLayout
@@ -50,7 +53,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="\?" />
+                android:text="\?"
+                android:id="@+id/recipe_prep_time" />
         </LinearLayout>
 
         <LinearLayout
@@ -67,7 +71,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                android:text="\?" />
+                android:text="\?"
+                android:id="@+id/recipe_cook_time" />
         </LinearLayout>
     </LinearLayout>
 
