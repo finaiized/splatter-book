@@ -18,6 +18,8 @@ public class MainActivity extends AppCompatActivity implements
         RecipeListFragment.OnRecipeSelectedListener,
         RecipeDetailFragment.OnEditRequestedListener {
 
+    boolean dualPane = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,20 +28,28 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar appBar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(appBar);
 
+        determinePaneLayout();
+
         if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, new RecipeListFragment()).commit();
+                    .add(R.id.fragment_container, RecipeListFragment.newInstance(dualPane)).commit();
+        }
+    }
+
+    private void determinePaneLayout() {
+        View v = findViewById(R.id.fragment_secondary);
+        if (v != null) {
+            dualPane = true;
         }
     }
 
     @Override
     public void onAddRecipe() {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_secondary);
         int fragmentId = R.id.fragment_container;
-        if (fragment != null) {
+        if (dualPane) {
             fragmentId = R.id.fragment_secondary;
         }
-        fragment = EditRecipeFragment.newInstance(-1);
+        Fragment fragment = EditRecipeFragment.newInstance(-1);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
         ft.replace(fragmentId, fragment);
@@ -49,10 +59,9 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onRecipeSelected(int id) {
-        View v = findViewById(R.id.fragment_secondary);
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_secondary);
 
-        if (v != null) { // Dual pane
+        if (dualPane) {
             if (fragment != null && fragment instanceof RecipeDetailFragment) { // Detail fragment already exists
                 ((RecipeDetailFragment) fragment).updateRecipeView(id);
             } else { // No detail fragment from before - create a new one

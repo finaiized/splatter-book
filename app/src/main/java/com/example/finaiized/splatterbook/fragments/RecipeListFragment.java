@@ -19,9 +19,11 @@ import com.example.finaiized.splatterbook.persistence.RecipesContract;
 
 public class RecipeListFragment extends ListFragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final String KEY_DUAL_PANE = "dual_pane";
     SimpleCursorAdapter adapter;
     OnRecipeSelectedListener recipeSelectedListener;
     OnAddRecipeListener  addRecipeListener;
+    private boolean dualPane = false;
 
     public interface OnRecipeSelectedListener {
         void onRecipeSelected(int id);
@@ -29,6 +31,14 @@ public class RecipeListFragment extends ListFragment implements LoaderManager.Lo
 
     public interface OnAddRecipeListener {
         void onAddRecipe();
+    }
+
+    public static RecipeListFragment newInstance(boolean dualPane) {
+        RecipeListFragment fragment = new RecipeListFragment();
+        Bundle b = new Bundle();
+        b.putBoolean(KEY_DUAL_PANE, dualPane);
+        fragment.setArguments(b);
+        return fragment;
     }
 
     @Override
@@ -50,20 +60,21 @@ public class RecipeListFragment extends ListFragment implements LoaderManager.Lo
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-    }
-
-    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        dualPane = getArguments().getBoolean(KEY_DUAL_PANE);
+
         adapter = new SimpleCursorAdapter(getActivity(), android.R.layout.simple_list_item_activated_2, null,
                 new String[] {RecipesContract.Recipes.TITLE, RecipesContract.Recipes.DESCRIPTION},
                 new int[] { android.R.id.text1, android.R.id.text2}, 0);
         setListAdapter(adapter);
-
+        setActivatedOnItemClick(dualPane);
         getLoaderManager().initLoader(0, null, this);
+    }
+
+    private void setActivatedOnItemClick(boolean activated) {
+        getListView().setChoiceMode(activated ? ListView.CHOICE_MODE_SINGLE : ListView.CHOICE_MODE_NONE);
     }
 
     @Override
