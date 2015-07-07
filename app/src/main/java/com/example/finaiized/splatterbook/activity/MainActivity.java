@@ -24,8 +24,10 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar appBar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(appBar);
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_container, new RecipeListFragment()).commit();
+        if (getSupportFragmentManager().findFragmentById(R.id.fragment_container) == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.fragment_container, new RecipeListFragment()).commit();
+        }
     }
 
     @Override
