@@ -68,9 +68,18 @@ public class RecipeDetailFragment extends Fragment implements LoaderManager.Load
             case R.id.action_edit:
                 editRequestedListener.editRequested(getCurrentIndex());
                 return true;
+            case R.id.action_delete:
+                deleteRecipe();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void deleteRecipe() {
+        Uri uri = Recipes.buildRecipeUri(String.valueOf(getCurrentIndex()));
+        getActivity().getContentResolver().delete(uri, null, null);
+        getFragmentManager().popBackStack();
     }
 
     @Nullable
