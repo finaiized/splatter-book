@@ -15,7 +15,8 @@ import com.example.finaiized.splatterbook.fragments.RecipeListFragment;
 
 public class MainActivity extends AppCompatActivity implements
         RecipeListFragment.OnAddRecipeListener,
-        RecipeListFragment.OnRecipeSelectedListener {
+        RecipeListFragment.OnRecipeSelectedListener,
+        RecipeDetailFragment.OnEditRequestedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +53,9 @@ public class MainActivity extends AppCompatActivity implements
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_secondary);
 
         if (v != null) { // Dual pane
-            if (fragment != null && fragment instanceof RecipeDetailFragment) { // Fragment already exists
+            if (fragment != null && fragment instanceof RecipeDetailFragment) { // Detail fragment already exists
                 ((RecipeDetailFragment) fragment).updateRecipeView(id);
-            } else { // No fragment from before - create a new one
+            } else { // No detail fragment from before - create a new one
                 fragment = RecipeDetailFragment.newInstance(id);
                 getSupportFragmentManager().beginTransaction().add(R.id.fragment_secondary, fragment).commit();
             }
@@ -66,5 +67,19 @@ public class MainActivity extends AppCompatActivity implements
             ft.addToBackStack(null);
             ft.commit();
         }
+    }
+
+    @Override
+    public void editRequested(int id) {
+        int viewId = R.id.fragment_container;
+        View v = findViewById(R.id.fragment_secondary);
+        if (v != null) viewId = R.id.fragment_secondary;
+
+        Fragment fragment = EditRecipeFragment.newInstance(id);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+        ft.replace(viewId, fragment);
+        ft.addToBackStack(null);
+        ft.commit();
     }
 }

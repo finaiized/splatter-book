@@ -1,10 +1,14 @@
 package com.example.finaiized.splatterbook.fragments;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,7 +20,7 @@ import android.widget.EditText;
 import com.example.finaiized.splatterbook.R;
 import com.example.finaiized.splatterbook.persistence.RecipesContract;
 
-public class EditRecipeFragment extends Fragment {
+public class EditRecipeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String KEY_ID = "id";
 
@@ -42,6 +46,22 @@ public class EditRecipeFragment extends Fragment {
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        getLoaderManager().initLoader(0, null, this);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_edit, container, false);
+        recipeNameText = (EditText) v.findViewById(R.id.recipe_name);
+        recipeDescriptionText = (EditText) v.findViewById(R.id.recipe_description);
+
+        return v;
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_edit, menu);
     }
@@ -55,15 +75,6 @@ public class EditRecipeFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_edit, container, false);
-        recipeNameText = (EditText) v.findViewById(R.id.recipe_name);
-        recipeDescriptionText = (EditText) v.findViewById(R.id.recipe_description);
-        return v;
     }
 
     private void saveRecipe() {
@@ -84,5 +95,28 @@ public class EditRecipeFragment extends Fragment {
 
     public int getCurrentIndex() {
         return getArguments().getInt(KEY_ID);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        String[] projection = new String[] {RecipesContract.Recipes.ID, RecipesContract.Recipes.TITLE, RecipesContract.Recipes.DESCRIPTION};
+        Uri uri = RecipesContract.Recipes.buildRecipeUri(String.valueOf(getCurrentIndex()));
+        return new CursorLoader(getActivity(), uri, projection, null, null, null);
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+        if (data != null) {
+            data.moveToFirst();
+            String title = data.getString(data.getColumnIndex(RecipesContract.Recipes.TITLE));
+            String description = data.getString(data.getColumnIndex(RecipesContract.Recipes.DESCRIPTION));
+            recipeNameText.setText(title);
+            recipeDescriptionText.setText(description);
+        }
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+
     }
 }

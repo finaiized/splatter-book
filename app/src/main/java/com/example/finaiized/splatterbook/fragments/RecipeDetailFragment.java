@@ -1,5 +1,6 @@
 package com.example.finaiized.splatterbook.fragments;
 
+import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,9 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -18,9 +22,15 @@ import com.example.finaiized.splatterbook.persistence.RecipesContract.Recipes;
 
 public class RecipeDetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String KEY_INDEX = "index";
-    private TextView titleText;
-    private TextView descriptionText;
 
+    private TextView recipeNameText;
+    private TextView recipeDescriptionText;
+
+    private OnEditRequestedListener editRequestedListener;
+
+    public interface OnEditRequestedListener {
+        void editRequested(int id);
+    }
 
     public static RecipeDetailFragment newInstance(int index) {
         RecipeDetailFragment fragment = new RecipeDetailFragment();
@@ -30,12 +40,45 @@ public class RecipeDetailFragment extends Fragment implements LoaderManager.Load
         return fragment;
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            editRequestedListener = (OnEditRequestedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement the interfaces declared in " + getClass().getSimpleName());
+        }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_detail, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()) {
+            case R.id.action_edit:
+                editRequestedListener.editRequested(getCurrentIndex());
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_detail, container, false);
-        titleText = (TextView) v.findViewById(R.id.recipe_title);
-        descriptionText = (TextView) v.findViewById(R.id.recipe_description);
+        recipeNameText = (TextView) v.findViewById(R.id.recipe_title);
+        recipeDescriptionText = (TextView) v.findViewById(R.id.recipe_description);
         return v;
     }
 
@@ -62,8 +105,8 @@ public class RecipeDetailFragment extends Fragment implements LoaderManager.Load
             data.moveToFirst();
             String title = data.getString(data.getColumnIndex(Recipes.TITLE));
             String description = data.getString(data.getColumnIndex(Recipes.DESCRIPTION));
-            titleText.setText(title);
-            descriptionText.setText(description);
+            recipeNameText.setText(title);
+            recipeDescriptionText.setText(description);
         }
     }
 
