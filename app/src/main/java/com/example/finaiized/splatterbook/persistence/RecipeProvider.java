@@ -65,7 +65,9 @@ public class RecipeProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
 
-        return queryBuilder.query(openHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
+        Cursor c = queryBuilder.query(openHelper.getReadableDatabase(), projection, selection, selectionArgs, null, null, sortOrder);
+        c.setNotificationUri(getContext().getContentResolver(), uri);
+        return c;
     }
 
     @Override
@@ -87,22 +89,29 @@ public class RecipeProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         SQLiteDatabase db = openHelper.getWritableDatabase();
+        Uri newUri;
         switch (uriMatcher.match(uri)) {
             case RECIPES: {
                 long index = db.insertOrThrow(Table.Recipes.TABLE_NAME, null, values);
-                return Recipes.buildRecipeUri(String.valueOf(index));
+                newUri = Recipes.buildRecipeUri(String.valueOf(index));
+                break;
             }
             case RECIPES_STEPS: {
                 long index = db.insertOrThrow(Table.Steps.TABLE_NAME, null, values);
-                return Recipes.buildStepsUri(String.valueOf(index));
+                newUri = Recipes.buildStepsUri(String.valueOf(index));
+                break;
             }
             case RECIPES_INGREDIENTS: {
                 long index = db.insertOrThrow(Table.Ingredients.TABLE_NAME, null, values);
-                return Recipes.buildIngredientsUri(String.valueOf(index));
+                newUri = Recipes.buildIngredientsUri(String.valueOf(index));
+                break;
             }
             default:
                 throw new UnsupportedOperationException("Unknown insert uri: " + uri);
         }
+        getContext().getContentResolver().notifyChange(newUri, null);
+
+        return newUri;
     }
 
     @Override
