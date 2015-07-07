@@ -48,7 +48,7 @@ public class EditRecipeFragment extends Fragment implements LoaderManager.Loader
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        getLoaderManager().initLoader(0, null, this);
+        getLoaderManager().initLoader(0, getArguments(), this);
     }
 
     @Nullable
@@ -99,6 +99,7 @@ public class EditRecipeFragment extends Fragment implements LoaderManager.Loader
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+        if (args != null && getCurrentIndex() == -1) return null; // A new recipe is being created, so no cursor is necessary
         String[] projection = new String[] {RecipesContract.Recipes.ID, RecipesContract.Recipes.TITLE, RecipesContract.Recipes.DESCRIPTION};
         Uri uri = RecipesContract.Recipes.buildRecipeUri(String.valueOf(getCurrentIndex()));
         return new CursorLoader(getActivity(), uri, projection, null, null, null);

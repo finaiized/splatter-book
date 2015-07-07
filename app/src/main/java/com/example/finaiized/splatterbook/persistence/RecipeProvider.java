@@ -109,8 +109,8 @@ public class RecipeProvider extends ContentProvider {
             default:
                 throw new UnsupportedOperationException("Unknown insert uri: " + uri);
         }
-        getContext().getContentResolver().notifyChange(newUri, null);
 
+        getContext().getContentResolver().notifyChange(newUri, null);
         return newUri;
     }
 
@@ -149,7 +149,9 @@ public class RecipeProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown deletion uri: " + uri);
         }
 
-        return db.delete(tableName, selection, selectionArgs);
+        int i = db.delete(tableName, selection, selectionArgs);
+        getContext().getContentResolver().notifyChange(uri, null);
+        return i;
     }
 
     @Override
@@ -185,6 +187,8 @@ public class RecipeProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown update uri: " + uri);
         }
 
-        return db.update(tableName, values, selection, selectionArgs);
+        int i = db.update(tableName, values, selection, selectionArgs);
+        getContext().getContentResolver().notifyChange(uri, null);
+        return i;
     }
 }
