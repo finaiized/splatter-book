@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import com.example.finaiized.splatterbook.R;
 import com.example.finaiized.splatterbook.fragments.EditRecipeFragment;
@@ -47,11 +48,17 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void onRecipeSelected(int id) {
+        View v = findViewById(R.id.fragment_secondary);
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_secondary);
 
-        if (fragment != null && fragment instanceof RecipeDetailFragment) {
-            ((RecipeDetailFragment) fragment).updateRecipeView(id);
-        } else {
+        if (v != null) { // Dual pane
+            if (fragment != null && fragment instanceof RecipeDetailFragment) { // Fragment already exists
+                ((RecipeDetailFragment) fragment).updateRecipeView(id);
+            } else { // No fragment from before - create a new one
+                fragment = RecipeDetailFragment.newInstance(id);
+                getSupportFragmentManager().beginTransaction().add(R.id.fragment_secondary, fragment).commit();
+            }
+        } else { // Single pane - replace existing fragment
             fragment = RecipeDetailFragment.newInstance(id);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
