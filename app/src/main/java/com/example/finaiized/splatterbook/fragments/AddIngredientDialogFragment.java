@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.finaiized.splatterbook.R;
 
@@ -18,6 +19,8 @@ public class AddIngredientDialogFragment extends DialogFragment implements Choos
 
     private ViewPager pager;
     private PagerAdapter adapter;
+
+    private TextView amount;
 
     @Nullable
     @Override
@@ -28,12 +31,15 @@ public class AddIngredientDialogFragment extends DialogFragment implements Choos
         adapter = new IngredientAdapter(getChildFragmentManager());
         pager.setAdapter(adapter);
 
+        amount = (TextView) v.findViewById(R.id.text_amount);
+
         return v;
     }
 
     @Override
     public void amountChosen(String s) {
         pager.setCurrentItem(1, true);
+        amount.setText(s);
     }
 
     private class IngredientAdapter extends FragmentPagerAdapter {
