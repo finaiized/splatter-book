@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.example.finaiized.splatterbook.R;
 
-public class AddIngredientDialogFragment extends DialogFragment {
+public class AddIngredientDialogFragment extends DialogFragment implements ChooseAmountFragment.OnAmountChosen {
 
     private ViewPager pager;
     private PagerAdapter adapter;
@@ -31,8 +31,9 @@ public class AddIngredientDialogFragment extends DialogFragment {
         return v;
     }
 
-    public void setPagerItem(int i) {
-        pager.setCurrentItem(i, true);
+    @Override
+    public void amountChosen(String s) {
+        pager.setCurrentItem(1, true);
     }
 
     private class IngredientAdapter extends FragmentPagerAdapter {

@@ -11,6 +11,10 @@ import android.widget.Button;
 import com.example.finaiized.splatterbook.R;
 
 public class ChooseAmountFragment extends Fragment {
+    public interface OnAmountChosen {
+        void amountChosen(String s);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -19,7 +23,13 @@ public class ChooseAmountFragment extends Fragment {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((AddIngredientDialogFragment)getParentFragment()).setPagerItem(1);
+                Fragment parent = getParentFragment();
+                if (parent instanceof OnAmountChosen) {
+                    OnAmountChosen callback = (OnAmountChosen) parent;
+                    callback.amountChosen(((Button) v).getText().toString());
+                } else {
+                    throw new ClassCastException("Parent fragment of ChooseAmountFragment must implement OnAmountChosen");
+                }
             }
         });
 
