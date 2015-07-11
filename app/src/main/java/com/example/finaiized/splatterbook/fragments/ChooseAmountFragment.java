@@ -10,7 +10,7 @@ import android.widget.Button;
 
 import com.example.finaiized.splatterbook.R;
 
-public class IngredientsFragment extends Fragment {
+public class ChooseAmountFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

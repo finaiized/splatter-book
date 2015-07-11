@@ -11,7 +11,6 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.finaiized.splatterbook.R;
 
@@ -43,8 +42,12 @@ public class AddIngredientDialogFragment extends DialogFragment {
 
         @Override
         public Fragment getItem(int position) {
-            return new IngredientsFragment();
+            if (position == 0)
+                return new ChooseAmountFragment();
+            if (position == 1)
+                return new ChooseUnitFragment();
 
+            return null;
         }
 
         @Override
