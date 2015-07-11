@@ -9,19 +9,21 @@
         <TextView
             android:id="@+id/text_amount"
             android:layout_width="wrap_content"
+            android:minWidth="50dp"
             android:paddingRight="10dp"
             android:layout_height="wrap_content"
-            android:text="5" />
+            android:text="(amount)" />
+        <TextView
+            android:id="@+id/text_unit"
+            android:layout_width="wrap_content"
+            android:paddingRight="10dp"
+            android:layout_height="wrap_content"
+            android:text="(unit)" />
         <TextView
             android:layout_width="wrap_content"
             android:paddingRight="10dp"
             android:layout_height="wrap_content"
-            android:text="(empty)" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:paddingRight="10dp"
-            android:layout_height="wrap_content"
-            android:text="mangoes" />
+            android:text="(ingredient)" />
     </LinearLayout>
 
     <com.example.finaiized.splatterbook.fragments.NoSwipeViewPager

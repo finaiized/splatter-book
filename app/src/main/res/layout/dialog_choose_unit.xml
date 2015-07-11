@@ -12,6 +12,7 @@
             android:layout_height="wrap_content"
             android:text="Volume"/>
         <LinearLayout
+            android:id="@+id/unit_volume"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">

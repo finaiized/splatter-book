@@ -15,12 +15,15 @@ import android.widget.TextView;
 
 import com.example.finaiized.splatterbook.R;
 
-public class AddIngredientDialogFragment extends DialogFragment implements ChooseAmountFragment.OnAmountChosen {
+public class AddIngredientDialogFragment extends DialogFragment implements
+        ChooseAmountFragment.OnAmountChosen,
+        ChooseUnitFragment.OnUnitChosen {
 
     private ViewPager pager;
     private PagerAdapter adapter;
 
-    private TextView amount;
+    private TextView amountText;
+    private TextView unitText;
 
     @Nullable
     @Override
@@ -31,7 +34,8 @@ public class AddIngredientDialogFragment extends DialogFragment implements Choos
         adapter = new IngredientAdapter(getChildFragmentManager());
         pager.setAdapter(adapter);
 
-        amount = (TextView) v.findViewById(R.id.text_amount);
+        amountText = (TextView) v.findViewById(R.id.text_amount);
+        unitText = (TextView) v.findViewById(R.id.text_unit);
 
         return v;
     }
@@ -39,7 +43,13 @@ public class AddIngredientDialogFragment extends DialogFragment implements Choos
     @Override
     public void amountChosen(String s) {
         pager.setCurrentItem(1, true);
-        amount.setText(s);
+        amountText.setText(s);
+    }
+
+    @Override
+    public void unitChosen(String unit) {
+        pager.setCurrentItem(2, true);
+        unitText.setText(unit);
     }
 
     private class IngredientAdapter extends FragmentPagerAdapter {
@@ -49,17 +59,21 @@ public class AddIngredientDialogFragment extends DialogFragment implements Choos
 
         @Override
         public Fragment getItem(int position) {
-            if (position == 0)
-                return new ChooseAmountFragment();
-            if (position == 1)
-                return new ChooseUnitFragment();
-
-            return null;
+            switch (position) {
+                case 0:
+                    return new ChooseAmountFragment();
+                case 1:
+                    return new ChooseUnitFragment();
+                case 2:
+                    return new ChooseIngredientFragment();
+                default:
+                    return null;
+            }
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
     }
 }
