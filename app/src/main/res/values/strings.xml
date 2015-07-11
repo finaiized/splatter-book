@@ -7,4 +7,6 @@
     <string name="action_delete">Delete recipe</string>
     <string name="action_edit">Edit Recipe</string>
     <string name="action_done">Finish editing</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>

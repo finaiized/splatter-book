@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.finaiized.splatterbook.R;
@@ -57,6 +58,14 @@ public class EditRecipeFragment extends Fragment implements LoaderManager.Loader
         View v = inflater.inflate(R.layout.fragment_edit, container, false);
         recipeNameText = (EditText) v.findViewById(R.id.recipe_name);
         recipeDescriptionText = (EditText) v.findViewById(R.id.recipe_description);
+
+        Button addIngredient = (Button) v.findViewById(R.id.add_ingredient);
+        addIngredient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AddIngredientDialogFragment().show(getFragmentManager(), null);
+            }
+        });
 
         return v;
     }
