@@ -1,5 +1,6 @@
 package com.example.finaiized.splatterbook.fragments;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -24,6 +25,7 @@ public class AddIngredientDialogFragment extends DialogFragment implements
 
     private TextView amountText;
     private TextView unitText;
+    private TextView ingredientText;
 
     @Nullable
     @Override
@@ -35,7 +37,9 @@ public class AddIngredientDialogFragment extends DialogFragment implements
         pager.setAdapter(adapter);
 
         amountText = (TextView) v.findViewById(R.id.text_amount);
+        amountText.setTypeface(null, Typeface.BOLD);
         unitText = (TextView) v.findViewById(R.id.text_unit);
+        ingredientText = (TextView) v.findViewById(R.id.text_ingredient);
 
         return v;
     }
@@ -44,12 +48,16 @@ public class AddIngredientDialogFragment extends DialogFragment implements
     public void amountChosen(String s) {
         pager.setCurrentItem(1, true);
         amountText.setText(s);
+        amountText.setTypeface(null, Typeface.NORMAL);
+        unitText.setTypeface(null, Typeface.BOLD);
     }
 
     @Override
     public void unitChosen(String unit) {
         pager.setCurrentItem(2, true);
         unitText.setText(unit);
+        unitText.setTypeface(null, Typeface.NORMAL);
+        ingredientText.setTypeface(null, Typeface.BOLD);
     }
 
     private class IngredientAdapter extends FragmentPagerAdapter {

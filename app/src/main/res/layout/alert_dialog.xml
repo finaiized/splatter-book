@@ -20,6 +20,7 @@
             android:layout_height="wrap_content"
             android:text="(unit)" />
         <TextView
+            android:id="@+id/text_ingredient"
             android:layout_width="wrap_content"
             android:paddingRight="10dp"
             android:layout_height="wrap_content"
