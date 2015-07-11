@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -21,7 +22,8 @@ import android.widget.EditText;
 import com.example.finaiized.splatterbook.R;
 import com.example.finaiized.splatterbook.persistence.RecipesContract;
 
-public class EditRecipeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class EditRecipeFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>,
+        AddIngredientDialogFragment.IngredientDialogListener {
 
     private static final String KEY_ID = "id";
 
@@ -29,7 +31,6 @@ public class EditRecipeFragment extends Fragment implements LoaderManager.Loader
     private EditText recipeDescriptionText;
 
     /**
-     * 
      * @param id The id of the recipe to edit, or -1 for a (new) empty recipe
      */
     public static EditRecipeFragment newInstance(int id) {
@@ -63,7 +64,9 @@ public class EditRecipeFragment extends Fragment implements LoaderManager.Loader
         addIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AddIngredientDialogFragment().show(getFragmentManager(), null);
+                DialogFragment dialog = new AddIngredientDialogFragment();
+                dialog.setTargetFragment(EditRecipeFragment.this, 0);
+                dialog.show(getFragmentManager(), null);
             }
         });
 
@@ -108,8 +111,9 @@ public class EditRecipeFragment extends Fragment implements LoaderManager.Loader
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        if (args != null && getCurrentIndex() == -1) return null; // A new recipe is being created, so no cursor is necessary
-        String[] projection = new String[] {RecipesContract.Recipes.ID, RecipesContract.Recipes.TITLE, RecipesContract.Recipes.DESCRIPTION};
+        if (args != null && getCurrentIndex() == -1)
+            return null; // A new recipe is being created, so no cursor is necessary
+        String[] projection = new String[]{RecipesContract.Recipes.ID, RecipesContract.Recipes.TITLE, RecipesContract.Recipes.DESCRIPTION};
         Uri uri = RecipesContract.Recipes.buildRecipeUri(String.valueOf(getCurrentIndex()));
         return new CursorLoader(getActivity(), uri, projection, null, null, null);
     }
@@ -127,6 +131,16 @@ public class EditRecipeFragment extends Fragment implements LoaderManager.Loader
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
+
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment d) {
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment d) {
 
     }
 }

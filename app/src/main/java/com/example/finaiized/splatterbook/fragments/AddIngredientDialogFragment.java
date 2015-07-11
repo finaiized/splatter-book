@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.finaiized.splatterbook.R;
@@ -23,9 +24,14 @@ public class AddIngredientDialogFragment extends DialogFragment implements
     private ViewPager pager;
     private PagerAdapter adapter;
 
+    private IngredientDialogListener listener;
+
     private TextView amountText;
     private TextView unitText;
     private TextView ingredientText;
+
+    private Button cancelButton;
+    private Button okButton;
 
     @Nullable
     @Override
@@ -36,10 +42,29 @@ public class AddIngredientDialogFragment extends DialogFragment implements
         adapter = new IngredientAdapter(getChildFragmentManager());
         pager.setAdapter(adapter);
 
+        listener = (IngredientDialogListener) getTargetFragment();
+
         amountText = (TextView) v.findViewById(R.id.text_amount);
         amountText.setTypeface(null, Typeface.BOLD);
         unitText = (TextView) v.findViewById(R.id.text_unit);
         ingredientText = (TextView) v.findViewById(R.id.text_ingredient);
+
+        cancelButton = (Button) v.findViewById(R.id.button_cancel);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onDialogNegativeClick(AddIngredientDialogFragment.this);
+                getDialog().cancel();
+            }
+        });
+
+        okButton = (Button) v.findViewById(R.id.button_ok);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onDialogPositiveClick(AddIngredientDialogFragment.this);
+            }
+        });
 
         return v;
     }
@@ -83,5 +108,10 @@ public class AddIngredientDialogFragment extends DialogFragment implements
         public int getCount() {
             return 3;
         }
+    }
+
+    public interface IngredientDialogListener {
+        void onDialogPositiveClick(DialogFragment d);
+        void onDialogNegativeClick(DialogFragment d);
     }
 }

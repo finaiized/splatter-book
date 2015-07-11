@@ -40,11 +40,13 @@
         style="?android:attr/buttonBarStyle"
         android:layout_gravity="right">
         <Button
+            android:id="@+id/button_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel"
             style="?android:attr/buttonBarButtonStyle" />
         <Button
+            android:id="@+id/button_ok"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="?android:attr/buttonBarButtonStyle"
