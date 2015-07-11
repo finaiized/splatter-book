@@ -63,8 +63,11 @@ public class AddIngredientDialogFragment extends DialogFragment implements
             @Override
             public void onClick(View v) {
                 listener.onDialogPositiveClick(AddIngredientDialogFragment.this);
+                getDialog().dismiss();
             }
         });
+
+        getDialog().setTitle("Add Ingredient");
 
         return v;
     }
