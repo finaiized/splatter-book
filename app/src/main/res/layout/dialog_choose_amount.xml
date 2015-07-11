@@ -13,73 +13,62 @@
             android:id="@+id/button_test"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/round_button"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical|center_horizontal"
-            android:text="⅛"
-            android:textColor="#fff"/>
+            android:text="⅛"/>
         <Button
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/round_button"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical|center_horizontal"
-            android:text="¼"
-            android:textColor="#fff"/>
+            android:text="¼" />
         <Button
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/round_button"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical|center_horizontal"
-            android:text="½"
-            android:textColor="#fff"/>
+            android:text="½" />
         <Button
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/round_button"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical|center_horizontal"
-            android:text="1"
-            android:textColor="#fff"/>
+            android:text="1" />
         <Button
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/round_button"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical|center_horizontal"
-            android:text="2"
-            android:textColor="#fff"/>
+            android:text="2" />
         <Button
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/round_button"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical|center_horizontal"
-            android:text="3"
-            android:textColor="#fff"/>
+            android:text="3" />
         <Button
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/round_button"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical|center_horizontal"
-            android:text="5"
-            android:textColor="#fff"/>
+            android:text="5" />
         <Button
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/round_button"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical|center_horizontal"
-            android:text="15"
-            android:textColor="#fff"/>
+            android:text="15" />
         <Button
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/round_button"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="30"
-            android:textColor="#fff"/>
+            android:background="?attr/selectableItemBackground"
+            android:text="30" />
         <Button
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:background="@drawable/round_button"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical|center_horizontal"
-            android:text="50"
-            android:textColor="#fff"/>
+            android:text="50" />
     </GridLayout>
 
     <LinearLayout
